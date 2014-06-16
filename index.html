@@ -1,22 +1,97 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>html5 engine</title>
-    </head>
-    <style rel="stylesheet" type="text/css">
-    	#box{
-    		background: #fafafa;
-    	}
-    </style>
-    <body>
-    	<canvas id="box" width="600" height="600">
-    		
-    	</canvas>
-    </body>
-    <script type="text/javascript" src="jquery1x.js"></script>
-    <script type="text/javascript">
-    $("box")
-    </script>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>html5 engine</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+		#box {
+			background: #fafafa;
+		}
+	</style>
+	<body>
+		<canvas id="box" width="600" height="600">
+
+		</canvas>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="genetic.js"></script>
+	<script type="text/javascript">
+		var box = $("#box").get(0);
+		var cWidth = $("#box").width();
+		var cHeight = $("#box").height();
+		var plateLine = cHeight * 0.8;
+		var cx = box.getContext("2d");
+		var timeCount = 0;
+
+		$(document).ready(function() {
+
+			box.onclick = function(e) {
+				var eObj = e ? e : window.evnet;
+				var x = eObj.clientX;
+				var y = eObj.clientY;
+				createBall(x, y);
+			};
+			function createBall(_x, _y) {
+				//box.onclick = undefined;
+				var radius = Math.random() * 50;
+				var styleColor = '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+
+				cx.moveTo(_x, _y);
+				cx.fillStyle = styleColor;
+				cx.beginPath();
+				cx.arc(_x, _y, radius, 0, Math.PI * 2, true);
+				cx.closePath();
+				cx.fill();
+
+				ballAction(radius,styleColor,_x, _y, 1);
+			}
+
+			function ballAction(_r,_c,_x, _y, _d) {
+				tiemCount = setTimeout(fallDown, 1000 / 24,0,_r,_c,_x,_y,1);
+			}
+
+			function fallDown(_v,_r,_c,_x, _y, _d) {
+				(function() {
+					t = 1/24;
+					a = 35;
+					_v = _v  + a * t * _d;
+					s = _v * t + 0.5 * a * t * t;
+					
+					if (_d > 0) {
+						_y = _y + s;
+						cx.clearRect(_x - _r, _y-_r-s*2, _r * 2 + 2, _r * 2 + 2);
+						cx.moveTo(_x, _y);
+						cx.fillStyle = _c;
+						cx.beginPath();
+						cx.arc(_x, _y, _r, 0, Math.PI * 2, true);
+						cx.closePath();
+						cx.fill();
+
+						if (_y >= 500) {
+							_d = -1;
+						}
+
+					} else {
+						_y = _y - s;
+						cx.clearRect(_x - _r, _y-_r+s*2, _r * 2, _r * 2);
+						cx.moveTo(_x, _y);
+						cx.fillStyle = _c;
+						cx.beginPath();
+						cx.arc(_x, _y, _r, 0, Math.PI * 2, true);
+						cx.closePath();
+						cx.fill();
+
+						if (_v <= 0) {
+							_d = 1;
+							_v = 0;
+						}
+					}
+					console.log(_x, _y);
+				})();
+				timeCount = setTimeout(fallDown, 1000 / 24,_v,_r,_c,_x, _y, _d);
+
+			};
+		});
+	</script>
 </html>

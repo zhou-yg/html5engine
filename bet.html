@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>html5 engine</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+		#box {
+			background: #fafafa;
+		}
+	</style>
+	<body>
+		<canvas id="box" width="800" height="800">
+
+		</canvas>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="genetic.js"></script>
+	<script type="text/javascript">
+		var box = $("#box").get(0);
+		var cWidth = $("#box").width();
+		var cHeight = $("#box").height();
+		var cx = box.getContext("2d");
+
+		$(document).ready(function() {
+			
+			function createCenteral(){
+				
+				var cX = cWidth/2;
+				var cY = cHeight/2;
+				var r = 25;
+				
+				cx.moveTo(cX, cY);
+				cx.fillStyle = '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+				cx.beginPath();
+				cx.arc(cX,cY,r,0,Math.PI*2,true);
+				cx.closePath();
+				cx.fill();
+				
+				createPointer(cX,cY,0,r);
+			}
+			function createPointer(_x,_y,_angle,_r){
+				/*
+				cx.beginPath();
+				cx.moveTo(_x-_r,_y-_r);
+				cx.translate(_x-_r,_y-_r);
+				cx.rotate(10*Math.PI/180);
+				cx.lineTo(_x,_y-6*_r);
+				cx.lineTo(_x+_r,_y-_r);
+				cx.closePath();
+				cx.strokeStyle = '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+				cx.stroke();
+				*/
+				var oX = 150;
+				var oY = 150;
+				cx.beginPath();
+				cx.moveTo(0,oY);
+				cx.lineTo(oX,oY);
+				cx.lineTo(oX,0);
+				cx.stroke();
+				
+				cx.beginPath();
+				cx.moveTo(0,0);
+				cx.rotate(45*Math.PI/180);
+				cx.fillRect(oX,oY,80,80);
+				cx.closePath();
+				cx.stroke();
+			}
+			
+			createCenteral();
+		});
+	</script>
+</html>
