@@ -22,6 +22,15 @@
 		var cHeight = $("#box").height();
 		var plateLine = cHeight * 0.8;
 		var cx = box.getContext("2d");
+
+		String.prototype.populate = function populate(params) {
+			var str = this.replace(/\{\w+\w}/g, function stringFormatInner(word) {
+				return params[word];
+			}("name"));
+			return str;
+		};
+		console.log("hello {name}".populate({name:"zzccc"}));
+		
 		var timeCount = 0;
 
 		$(document).ready(function() {
@@ -44,23 +53,23 @@
 				cx.closePath();
 				cx.fill();
 
-				ballAction(radius,styleColor,_x, _y, 1);
+				ballAction(radius, styleColor, _x, _y, 1);
 			}
 
-			function ballAction(_r,_c,_x, _y, _d) {
-				tiemCount = setTimeout(fallDown, 1000 / 24,0,_r,_c,_x,_y,1);
+			function ballAction(_r, _c, _x, _y, _d) {
+				tiemCount = setTimeout(fallDown, 1000 / 24, 0, _r, _c, _x, _y, 1);
 			}
 
-			function fallDown(_v,_r,_c,_x, _y, _d) {
+			function fallDown(_v, _r, _c, _x, _y, _d) {
 				(function() {
-					t = 1/24;
+					t = 1 / 24;
 					a = 35;
-					_v = _v  + a * t * _d;
+					_v = _v + a * t * _d;
 					s = _v * t + 0.5 * a * t * t;
-					
+
 					if (_d > 0) {
 						_y = _y + s;
-						cx.clearRect(_x - _r, _y-_r-s*2, _r * 2 + 2, _r * 2 + 2);
+						cx.clearRect(_x - _r, _y - _r - s * 2, _r * 2 + 2, _r * 2 + 2);
 						cx.moveTo(_x, _y);
 						cx.fillStyle = _c;
 						cx.beginPath();
@@ -74,7 +83,7 @@
 
 					} else {
 						_y = _y - s;
-						cx.clearRect(_x - _r, _y-_r+s*2, _r * 2, _r * 2);
+						cx.clearRect(_x - _r, _y - _r + s * 2, _r * 2, _r * 2);
 						cx.moveTo(_x, _y);
 						cx.fillStyle = _c;
 						cx.beginPath();
@@ -88,7 +97,7 @@
 						}
 					}
 				})();
-				timeCount = setTimeout(fallDown, 1000 / 24,_v,_r,_c,_x, _y, _d);
+				timeCount = setTimeout(fallDown, 1000 / 24, _v, _r, _c, _x, _y, _d);
 
 			};
 		});
