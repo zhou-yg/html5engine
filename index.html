@@ -23,14 +23,6 @@
 		var plateLine = cHeight * 0.8;
 		var cx = box.getContext("2d");
 
-		String.prototype.populate = function populate(params) {
-			var str = this.replace(/\{\w+\w}/g, function stringFormatInner(word) {
-				return params[word];
-			}("name"));
-			return str;
-		};
-		console.log("hello {name}".populate({name:"zzccc"}));
-		
 		var timeCount = 0;
 
 		$(document).ready(function() {
