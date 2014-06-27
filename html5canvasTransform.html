@@ -80,6 +80,7 @@
 
 				cx.beginPath();
 				cx.transform(a, b, c, d, e, f);
+				cx.rotate(Math.PI/6);
 				cx.fillStyle = "#5C8AFF";
 				cx.fillRect(x, y, rw, rh);
 				cx.closePath();
@@ -89,21 +90,21 @@
 
 				cx.beginPath();
 				cx.fillStyle = "#696969";
-				cx.moveTo(0, f + y);
-				cx.lineTo(e + x, f + y);
-				cx.lineTo(e + x, 0);
+				cx.moveTo(0, f + y*d+x*b);
+				cx.lineTo(e + x*a+ y*c, f + y*d + x*b);
+				cx.lineTo(e + x*a+ y*c, 0);
 
-				cx.moveTo(cWidth, f + y + b * rh);
-				cx.lineTo(e + x + rw * a, f + y + b * rh);
-				cx.lineTo(e + x + rw * a, 0);
+				cx.moveTo(cWidth, f + y*d + b * rh +x*b);
+				cx.lineTo(e + x*a + rw * a+ y*c, f + y*d + b * rh +x*b);
+				cx.lineTo(e + x*a + rw * a + y*c, 0);
 
-				cx.moveTo(0, f + y + rh * d);
-				cx.lineTo(e + x + c * rw, f + y + rh * d);
-				cx.lineTo(e + x + c * rw, cHeight);
+				cx.moveTo(0, f + y*d + rh * d+x*b);
+				cx.lineTo(e + x*a + c * rw + y*c, f + y*d + rh * d + x*b);
+				cx.lineTo(e + x*a + c * rw + y*c, cHeight);
 
-				cx.moveTo(cWidth, f + y + rh * d + b * rh);
-				cx.lineTo(e + x + rw * a + c * rw, f + y + rh * d + b * rh);
-				cx.lineTo(e + x + rw * a + c * rw, cHeight);
+				cx.moveTo(cWidth, f + y*d + rh * d + b * rh+x*b);
+				cx.lineTo(e + x*a + rw * a + c * rw + y*c, f + y*d + rh * d + b * rh + x*b);
+				cx.lineTo(e + x*a + rw * a + c * rw + y*c, cHeight);
 				cx.stroke();
 			}
 
