@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>html5 engine</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+		#box {
+			background: #fafafa;
+		}
+		input {
+			width: 50px;
+		}
+	</style>
+	<body>
+		<div>
+			a :
+			<input id="a" value="1"/>
+			b :
+			<input id="b" value="0"/>
+			c :
+			<input id="c" value="0"/>
+			d :
+			<input id="d" value="1"/>
+			e :
+			<input id="e" value="80"/>
+			f :
+			<input id="f" value="80"/>
+			<br />
+			x :
+			<input id="x" value="0"/>
+			y :
+			<input id="y" value="0"/>
+			<br />
+			rw:
+			<input id="rw" value="150"/>
+			rh:
+			<input id="rh" value="150"/>
+		</div>
+		<canvas id="box" width="800" height="800">
+
+		</canvas>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="genetic.js"></script>
+	<script type="text/javascript">
+		var box = $("#box").get(0);
+		var cWidth = $("#box").width();
+		var cHeight = $("#box").height();
+		var cx = box.getContext("2d");
+
+		$(document).ready(function() {
+
+			$("input").keyup(draw);
+
+			function draw() {
+				clear();
+
+				var a = Number($("#a").val());
+				var b = Number($("#b").val());
+				var c = Number($("#c").val());
+				var d = Number($("#d").val());
+				var e = Number($("#e").val());
+				var f = Number($("#f").val());
+				var x = Number($("#x").val());
+				var y = Number($("#y").val());
+				var rw = Number($("#rw").val());
+				var rh = Number($("#rh").val());
+
+				refresh(a, b, c, d, e, f, x, y, rw, rh);
+			}
+
+			function refresh(a, b, c, d, e, f, x, y, rw, rh) {
+
+				var angle = 90 * Math.PI / 180;
+				var sin = Math.sin(angle);
+				var cos = Math.cos(angle);
+
+				cx.save();
+
+				cx.beginPath();
+				cx.transform(a, b, c, d, e, f);
+				cx.fillStyle = "#5C8AFF";
+				cx.fillRect(x, y, rw, rh);
+				cx.closePath();
+				cx.stroke();
+
+				cx.restore();
+
+				cx.beginPath();
+				cx.fillStyle = "#696969";
+				cx.moveTo(0, f + y);
+				cx.lineTo(e + x, f + y);
+				cx.lineTo(e + x, 0);
+
+				cx.moveTo(cWidth, f + y + b * rh);
+				cx.lineTo(e + x + rw * a, f + y + b * rh);
+				cx.lineTo(e + x + rw * a, 0);
+
+				cx.moveTo(0, f + y + rh * d);
+				cx.lineTo(e + x + c * rw, f + y + rh * d);
+				cx.lineTo(e + x + c * rw, cHeight);
+
+				cx.moveTo(cWidth, f + y + rh * d + b * rh);
+				cx.lineTo(e + x + rw * a + c * rw, f + y + rh * d + b * rh);
+				cx.lineTo(e + x + rw * a + c * rw, cHeight);
+				cx.stroke();
+			}
+
+			function clear() {
+				cx.clearRect(0, 0, cWidth, cHeight);
+			}
+
+			draw();
+		});
+
+	</script>
+</html>
