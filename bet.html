@@ -59,12 +59,22 @@
 				cx.lineTo(oX,0);
 				cx.stroke();
 				
+				cx.save();
+				
 				cx.beginPath();
-				cx.moveTo(0,0);
+				cx.translate(150,150);
 				cx.rotate(45*Math.PI/180);
-				cx.fillRect(oX,oY,80,80);
+				cx.fillRect(0,0,80,80);
 				cx.closePath();
 				cx.stroke();
+				
+				cx.restore();
+
+				cx.beginPath();
+				cx.fillRect(0,0,80,80);
+				cx.closePath();
+				cx.stroke();
+
 			}
 			
 			createCenteral();
