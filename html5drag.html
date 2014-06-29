@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>html5 engine</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+			}
+			span {
+				color: blue;
+			}
+			img {
+				position: relative;
+			}
+			#d1 {
+				background: #EAD3FF;
+				width: 100px;
+				height: 100px;
+			}
+			#d2 {
+				background: #E0D312;
+				width: 200px;
+				height: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		dstart-screenX:<span id="dssx"></span>
+		<br />
+		dstart-screenY:<span id="dssy"></span>
+		<br />
+		ondrag-screenx:<span id="odsx"></span>
+		<br />
+		ondrag-screeny:<span id="odsy"></span>
+		<br />
+		d-screenx-distance:<span id="dsxd"></span>
+		<br />
+		d-screeny-distance:<span id="dsyd"></span>
+		<br />
+		isentered:<span id="isentered">no</span>
+
+		<br />
+		move:<span id="enter_move"></span>
+		<br />
+		<img src="imgs/mini-pet.png" draggable="true"/>
+		<div id="d1">
+			d1
+		</div>
+		<div id="d2">
+			d2
+		</div>
+
+	</body>
+	<script type="text/javascript" src="jquery2x.js"></script>
+	<script type="text/javascript">
+		var d1 = $("#d1")[0];
+		var d2 = $("#d2")[0];
+
+		var startScreenX;
+		var startScreenY;
+
+		var down = "mousedown";
+		var move = "mousemove";
+		var up = "mouseup";
+		var out = "mouseout";
+        
+		if ('ontouchstart' in window && 0) {
+			down = "touchstart";
+			move = "touchmove";
+			up = "touchend";
+			out = "touchcancel";
+
+			var im = $("img")[0];
+			var o1;
+			im["on" + down] = function(e) {
+				o1 = e.touches[0];
+			};
+			im["on" + up] = function(e) {
+				o1 = e.touches[0];
+			};
+			window["on" + move] = function(e) {
+				var o2 = e.touches[1];
+				if (o1 && o2) {
+					var a = Math.atan2(o2.clientY - o1.clientY, o2.clientX - o1.clientX) / Math.PI * 180;
+					$("img").css("transform", "rotate(" + a + "deg)");
+				}
+			};
+
+		} else {
+			console.log("is window");
+			
+		}
+		d1.draggable = true;
+		
+		if(0){
+			window.ontouchmove = function(e){
+				alert(e.touches);
+			};
+		}
+		if(0){
+			$(window).on("touchmove",function(e){
+				alert(e.touches);
+			});
+		}
+		if(1){
+			$("div").bind("click",function(e){
+				console.log(this.id+":"+"by bind");
+			});
+			var r = $("div").on("click",function(e){
+				console.log(this.id+":"+"by on");
+			});
+			console.info(r);
+		}
+		if(1){
+				
+		}
+		/*
+		d1.ondragstart = function(e) {
+			e.dataTransfer.setData("drag", "start");
+			console.info(e);
+			startScreenX = e.screenX;
+			startScreenY = e.screenY;
+
+			$("#dssx").html(startScreenX);
+			$("#dssy").html(startScreenY);
+
+			console.info("drag start");
+		};
+		
+		$("#d1").on("dragstart",function(e){
+			e.dataTransfer.setData("drag", "start");
+			console.info(e);
+			startScreenX = e.screenX;
+			startScreenY = e.screenY;
+
+			$("#dssx").html(startScreenX);
+			$("#dssy").html(startScreenY);
+
+			console.info("drag start");			
+		});
+		
+
+		 * */
+		$("#d1").on("dragstart",function(e){
+			e.dataTransfer.setData("drag", "start");
+			console.info(e);
+			startScreenX = e.screenX;
+			startScreenY = e.screenY;
+
+			$("#dssx").html(startScreenX);
+			$("#dssy").html(startScreenY);
+
+			console.info("drag start");			
+		});
+		
+		
+		d1.onmousemove = function(e) {
+			console.log("move");
+		};
+		d1.onmousedown = function(e) {
+			console.log("down");
+		};
+		d1.ondrag = function(e) {
+			$("#odsx").html(e.screenX);
+			$("#odsy").html(e.screenY);
+			/*在firefox下，拖动时的事件，无法读取到坐标值*/
+		};
+		d1.ondragend = function(e) {
+			e.stopPropagation();
+			console.info(e);
+			$("#dsxd").html(e.screenX - startScreenX);
+			$("#dsyd").html(e.screenY - startScreenY);
+		};
+		/*是否进入的判断是根据鼠标位置是否进入来决定的*/
+		var i = 0;
+		d2.ondragenter = function(e) {
+			console.log(e);
+			$("#isentered").html("in");
+		};
+		d2.ondragover = function(e) {
+			$("#enter_move").html(i++);
+		};
+		d2.ondrop = function(e) {
+			console.log(e);
+			$("#isentered").html("all in");
+		};
+		d2.ondragleave = function(e) {
+			$("#isentered").html("out");
+		};
+	</script>
+</html>

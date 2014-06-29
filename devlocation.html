@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>html5 engine</title>
+	</head>
+	<body>
+		currentPosition:
+		<br />
+		x:<span id="x"></span>
+		<br />
+		y:<span id="y"></span>
+		<br />
+		z:<span id="z"></span>
+		<br />
+		s:<span id="speed" style="color:blue"></span>
+		<br />
+		e:<span id="error" style="color:red"></span>
+	</body>
+	<script type="text/javascript">
+		var x = document.getElementById("x");
+		var y = document.getElementById("y");
+		var z = document.getElementById("z");
+		var s = document.getElementById("speed");
+		var e = document.getElementById("error");
+
+		if (navigator.geolocation) {
+
+			var getPosition = function() {
+
+				navigator.geolocation.getCurrentPosition(function(pos) {
+
+					x.innerHTML = pos.coords.latitude;
+					y.innerHTML = pos.coords.longitude;
+					z.innerHTML = pos.coords.altitude;
+
+				}, function(error) {
+					switch(error.code) {
+						case error.PERMISSION_DENIED:
+							e.innerHTML = "User denied the request for Geolocation.";
+							break;
+						case error.POSITION_UNAVAILABLE:
+							e.innerHTML = "Location information is unavailable.";
+							break;
+						case error.TIMEOUT:
+							e.innerHTML = "The request to get user location timed out.";
+							break;
+						case error.UNKNOWN_ERROR:
+							e.innerHTML = "An unknown error occurred.";
+							break;
+					}
+				});
+				return this;
+			}();
+			
+			var watchPosition = function(){
+				
+				var watchId = navigator.geolocation.watchPosition(function(pos) {
+
+					x.innerHTML = pos.coords.latitude;
+					y.innerHTML = pos.coords.longitude;
+					z.innerHTML = pos.coords.altitude;
+					s.innerHTML = pos.coords.speed;
+					
+				});
+				return this;
+			}();
+			
+		} else {
+			alert("no location service");
+		}
+
+	</script>
+</html>

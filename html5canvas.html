@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>html5 engine</title>
+	</head>
+	<style type="text/css">
+		#box{
+			background:#FAFAFA;
+		}
+	</style>
+	<body>
+		t-drawIamge:<span id="di">&nbsp;ms</span>
+		<br />
+		t-fillRect:<span id="fr">&nbsp;ms</span>
+		<br />
+		t-setdata:<span id="sd"> &nbsp;ms</span>
+		<br />
+		t-setnulldata:<span id="snd">&nbsp;ms</span>
+		<br />
+		<canvas id="box" width="800" height="500">
+			no canvas
+		</canvas>
+	</body>
+	<script type="text/javascript" src="jquery2x.js"></script>
+	<script type="text/javascript" >
+		var box;
+		var cWidth;
+		var cHeight;
+		var cx;
+		//3F48CC
+		$(document).ready(function() {
+			box = $("#box").get(0);
+			cWidth = $("#box").width();
+			cHeight = $("#box").height();
+			cx = box.getContext("2d");
+			
+			
+			var d1 = new Date().getTime();
+			var m = new Image();
+			m.src = "imgs/blue_150_150.png";
+			m.onload = function(){
+				cx.drawImage(m,0,0);
+				$("#di").before((new Date().getTime())-d1);
+			};
+
+			var d2 = new Date().getTime();
+			cx.beginPath();
+			cx.fillStyle = "#3F48CC";
+			cx.fillRect(0,150,150,150);
+			cx.stroke();
+			$("#fr").before((new Date().getTime())-d2);
+			
+			var d3 = new Date().getTime();
+			var sdArr = cx.getImageData(0,300,150,150);
+			var allDots = 150*150*4;
+			var colorArr = [63,72,204,255];
+			for(var i=0;i<allDots;i++){
+				sdArr.data[i] = colorArr[i%4];
+			}
+			cx.putImageData(sdArr,0,300);
+			$("#sd").before((new Date().getTime())-d3);
+			
+			var d4 = new Date().getTime();
+			var sdArr2 = cx.createImageData(150,150);
+			var allDots2 = 150*150*4;
+			var colorArr2 = [63,72,204,255];
+			for(var i=0;i<allDots2;i++){
+					sdArr2.data[i] = colorArr2[i%4];
+			}
+			cx.putImageData(sdArr2,0,450);
+			$("#snd").before((new Date().getTime())-d4);
+		});
+	</script>
+</html>
