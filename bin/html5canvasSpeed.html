@@ -6,7 +6,6 @@
 	</head>
 	<style type="text/css">
 		#box{
-			background:#FAFAFA;
 		}
 	</style>
 	<body>
@@ -18,7 +17,7 @@
 		<br />
 		t-setnulldata:<span id="snd">&nbsp;ms</span>
 		<br />
-		<canvas id="box" width="800" height="500">
+		<canvas id="box" width="900" height="600">
 			no canvas
 		</canvas>
 	</body>
@@ -34,11 +33,11 @@
 			cWidth = $("#box").width();
 			cHeight = $("#box").height();
 			cx = box.getContext("2d");
-			
+			cx.globalAlpha = "0.5";
 			
 			var d1 = new Date().getTime();
 			var m = new Image();
-			m.src = "imgs/blue_150_150.png";
+			m.src = "../imgs/blue_150_150.png";
 			m.onload = function(){
 				cx.drawImage(m,0,0);
 				$("#di").before((new Date().getTime())-d1);
@@ -70,6 +69,31 @@
 			}
 			cx.putImageData(sdArr2,0,450);
 			$("#snd").before((new Date().getTime())-d4);
+			
+			cx.beginPath();
+			cx.setLineWidth(100);
+			cx.moveTo(300,200);
+			cx.lineTo(500,200);
+			cx.stroke();
+
+			cx.beginPath();
+			cx.setLineWidth(100);
+			cx.moveTo(500,200);
+			cx.lineTo(500,400);
+			cx.stroke();
+
+			cx.beginPath();
+			cx.setLineWidth(100);
+			cx.moveTo(500,400);
+			cx.lineTo(300,400);
+			cx.stroke();
+
+			cx.beginPath();
+			cx.setLineWidth(100);
+			cx.moveTo(300,400);
+			cx.lineTo(300,200);
+			cx.stroke();
+
 		});
 	</script>
 </html>

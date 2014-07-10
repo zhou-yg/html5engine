@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>css3 Trans</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		.container{
+			margin-top:60px;
+			margin-left:20px;
+			margin-right:50px;
+			background-color:#F0F0F0;
+			width: 200px;
+			height: 200px;
+			float: left;
+		}	
+		.container div{
+				
+			transition-property:all;
+			-webkit-transition-property:all;
+				
+			transition-duration:2s;
+			-webkit-transition-duration: 2s;
+				
+			transition-timing-function:linear;
+			-webkit-transition-timing-function:linear;
+				
+			transition-delay:0s;
+			-webkit-transition-delay:0s;
+		}
+		.container div:hover{
+			transform:rotate(90deg);
+			-webkit-transform: rotate(90deg);
+		}
+		.d1{
+			background:#EAD3FF;
+			width: 100%;
+			height: 100%;
+
+			transform-origin:50% 50%;
+			-webkit-transform-origin:50% 50%;
+			
+			transform: translate(50px,50px);
+			-webkit-transform:translate(50px,50px);
+		}
+		.d2{
+			background:#D3FBFF;
+			width: 100%;
+			height: 100%;
+
+			transform-origin:0px 0px;
+			-webkit-transform-origin:0px 0px;
+			
+			transform: translate(50px,50px);
+			-webkit-transform:translate(50px,50px);
+		}
+		.d3{
+			background:#ECFFD3;
+			width: 100%;
+			height: 100%;
+
+			transform-origin:50px 50px;
+			-webkit-transform-origin:50px 50px;
+			
+			transform: translate(50px,50px);
+			-webkit-transform:translate(50px,50px);
+		}
+		.d4{
+			background:#FFDCD3;
+			width: 100%;
+			height: 100%;
+
+			transform-origin:50px 100px;
+			-webkit-transform-origin:50px 100px;
+			
+			transform: translate(50px,50px);
+			-webkit-transform:translate(50px,50px);
+		}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="d1">
+				d1<br/>
+				origin:50% 50%(默认)<br />
+				translate:50px 50px<br />
+				rotate:90deg<br />
+			</div>
+		</div>
+		<div class="container">
+			<div class="d2">
+				d2<br />
+				origin:0px 0px<br />
+				translate:50px 50px<br />
+				rotate:90<br />
+			</div>
+		</div>
+		<div class="container">
+			<div class="d3">
+				d3<br />
+				origin:50px 50px<br />
+				translate:50px 50px<br />
+				rotate:90<br />
+			</div>
+		</div>
+		<div class="container">
+			<div class="d4">
+				d4<br />
+				origin:50px 100px<br />
+				translate:50px 50px<br />
+				rotate:90<br />
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	
+	</script>
+</html>

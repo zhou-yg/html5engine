@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<title>html5 engine</title>
+		<title>h5Drag</title>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -23,6 +23,11 @@
 				background: #E0D312;
 				width: 200px;
 				height: 200px;
+			}
+			#d3{
+				background: #E66312;
+				width: 300px;
+				height: 300px;
 			}
 		</style>
 	</head>
@@ -44,14 +49,21 @@
 		<br />
 		move:<span id="enter_move"></span>
 		<br />
-		<img src="imgs/mini-pet.png" draggable="true"/>
+		<img src="../imgs/mini-pet.png" draggable="true"/>
 		<div id="d1">
 			d1
 		</div>
 		<div id="d2">
 			d2
 		</div>
-
+		state:<span id="s3"></span>
+		<br />
+		x3:<span id="x3"></span>
+		<br />
+		y3:<span id="y3"></span>
+		<div id="d3">
+			d3
+		</div>
 	</body>
 	<script type="text/javascript" src="jquery2x.js"></script>
 	<script type="text/javascript">
@@ -114,7 +126,19 @@
 			console.info(r);
 		}
 		if(1){
+			$("#d3").on("mousedown",function(e){
+				$("#s3").html("down");
+			});
+			$("#d3").on("mousemove",function(e){
+				var x = e.clientX - $(this).offset().left;
+				var y = e.clientY - $(this).offset().top;
 				
+				$("#x3").html(x);
+				$("#y3").html(y);
+			});
+			$("#d3").on("mouseup",function(e){
+				$("#s3").html("up");
+			});
 		}
 		/*
 		d1.ondragstart = function(e) {

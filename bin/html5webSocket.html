@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>WebSocket</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>	
+		<style type="text/css">
+			textarea {
+				min-width: 440px;
+				max-width: 440px;
+				min-height: 360px;
+			}
+			.left {
+				float: left;
+			}
+			.right {
+				width: 200px;
+				height: 400px;
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="left">
+			name:
+			<input id="username" type="text" />
+			<button id="connect">
+				connect
+			</button>
+			<br />
+			about:<span id="about"></span>
+			<br />
+			<textarea id="mlist"></textarea>
+			<br />
+			message:
+			<input id="message" type="text"/>
+			<button id="send">
+				send
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			server = "ws://10.0.3.183:3000";
+			webSocket = undefined;
+
+			$("#connect").one("click", function() {
+				
+				$("#username").get(0).disabled = true;
+
+				webSocket = new WebSocket(server);
+				
+				webSocket.onopen = onOpen;
+				webSocket.onmessage = onMessage;
+				
+			});
+			$("#send").on("click",function(){
+				
+				var v = $("#message").val();
+				console.log(v);
+				
+				webSocket.send(v);
+			});
+			function onOpen() {
+
+				$("#about").text("on connecting");
+
+				webSocket.send($("#username").val());
+			}
+
+			function onMessage(evt) {
+				var d;
+
+				try {
+					d = JSON.parse(evt.data);
+				} catch(e) {
+					d = evt.data;
+					$("#mlist").text(d+"\n"+$("#mlist").text());
+				}
+				console.log(evt.data);
+			}
+		});
+	</script>
+</html>
