@@ -22,8 +22,8 @@
 			transition-property:all;
 			-webkit-transition-property:all;
 				
-			transition-duration:2s;
-			-webkit-transition-duration: 2s;
+			transition-duration:1s;
+			-webkit-transition-duration: 1s;
 				
 			transition-timing-function:linear;
 			-webkit-transition-timing-function:linear;
@@ -32,15 +32,19 @@
 			-webkit-transition-delay:0s;
 		}
 		.container div:hover{
-			transform:rotate(90deg);
-			-webkit-transform: rotate(90deg);
+			/*transform:rotate(180deg);
+			-webkit-transform: rotate(180deg);*/
+			/*transform: scale(2,2);
+			-webkit-transform:scale(2,2);*/
+			transform: skew(40deg,40deg);
+			-webkit-transform: skew(40deg,40deg);
 		}
 		.d1{
 			background:#EAD3FF;
 			width: 100%;
 			height: 100%;
 
-			transform-origin:50% 50%;
+			transform-origin:0% 50%;
 			-webkit-transform-origin:50% 50%;
 			
 			transform: translate(50px,50px);
@@ -55,7 +59,7 @@
 			-webkit-transform-origin:0px 0px;
 			
 			transform: translate(50px,50px);
-			-webkit-transform:translate(50px,50px);
+			-webkit-transform:translate(0px,0px);
 		}
 		.d3{
 			background:#ECFFD3;
@@ -74,7 +78,7 @@
 			height: 100%;
 
 			transform-origin:50px 100px;
-			-webkit-transform-origin:50px 100px;
+			-webkit-transform-origin:0px 100px;
 			
 			transform: translate(50px,50px);
 			-webkit-transform:translate(50px,50px);
@@ -82,10 +86,19 @@
 		</style>
 	</head>
 	<body>
+		<p>transform：即图形变换，仅在浏览器渲染其元素时改变渲染后的显示结果。</p>
+		<p>transform-origin:a，b设置变形结束后元素放置的原点，而不是变形开始时候的旋转的中心点。</p>
+		<nav>
+			<ul>
+				<li>在旋转中(rotate)，a为垂直方向,右边为正方向，b为水平，下边为正方向</li>
+				<li>在缩放(scale)，a为水平方向，左边为正方形，b为垂直，上边为正方向</li>
+				<li>在翻转斜交(skew),a为垂直方向,左边边为正方向，b为水平，上边边为正方向</li>
+			</ul>
+		</nav>
 		<div class="container">
 			<div class="d1">
 				d1<br/>
-				origin:50% 50%(默认)<br />
+				origin:0% 50%(默认)<br />
 				translate:50px 50px<br />
 				rotate:90deg<br />
 			</div>
@@ -94,7 +107,7 @@
 			<div class="d2">
 				d2<br />
 				origin:0px 0px<br />
-				translate:50px 50px<br />
+				translate:0px 0px<br />
 				rotate:90<br />
 			</div>
 		</div>

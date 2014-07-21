@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>MVC</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			
+		</style>
+	</head>
+	<body>
+		<h1>Hello</h1>
+		<div>
+			<div id="theTmp"></div>
+			<script type="text/template" id="template">
+				<p>underscore</p>
+				<p><%= my_label %></p>
+			</script>
+			<section>
+				s%d
+				<span><a href="#/actions">#ab</a></span>
+					<br />
+					<a href="#/p/123">#/p/123</a>
+			</section>
+			<input type="text" value="search" />
+		</div>
+		<textarea id="ta">
+		</textarea>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="underscore-min.js"></script>
+	<script type="text/javascript" src="backbone-min.js"></script>
+	<script type="text/javascript">
+	var Person = Backbone.Model.extend({
+		initialize:function(){
+			this.on("change:a",function(){
+				console.log("a is changed");
+			});
+			this.on("invalid",function(m,e){
+				console.log(e);
+			});
+		},
+		//if return a string data,so that the parameter is illegal;
+		validate:function(att){
+			console.log(att);
+			return "XXX";
+		},
+		defaults:{
+			a:"a",
+			b:"b"
+		},
+		//custom function
+		ppd:function(){
+			return this.get("a");
+		}
+	});
+	
+	var AppRouter = Backbone.Router.extend({
+		routes:{
+			"actions":"ab",
+			"p/:d":"pd"
+		},
+		ab:function(action){
+			console.log("ab:",action);
+		},
+		pd:function(d){
+			console.log("p:",d);
+		}
+	});
+	
+	var MyView = Backbone.View.extend({
+		el:$("#theTmp"),
+		initialize:function(){
+			console.log("myView init");
+		},
+		render:function(context){
+			var t = _.template($("#template").html(),context);
+			$(this.el).html(t);
+		}
+	});
+	
+	var appRouter = new AppRouter();
+	Backbone.history.start();
+	
+	var p = new Person();
+	p.set({a:"c"});
+	p.save();
+	
+	var myView = new MyView();
+	myView.render({my_label:"我的标签"});
+	</script>
+</html>

@@ -22,7 +22,7 @@
 		if(0){
 			var p1 = wait(1);
 			p1.done(function(n){
-				console.log("task ",n," done")
+				console.log("task ",n," done");
 				var p2 = wait(2);
 				p2.done(function(n){
 					console.log("task ",n," done");
@@ -36,7 +36,7 @@
 				return wait(4);  
 				//这里的return 是在done方法内部的，不是done的返回值.
 				//而且done方法返回的是当前的promis的对象，p4是p3的promise对象，所以p4
-			})
+			});
 			p4.done(function(n){
 				console.log("task ",n," done");
 			});
