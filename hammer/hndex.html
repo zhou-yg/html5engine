@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Hammer</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>	
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			#container {
+				margin:0 auto;
+				width: 90%;
+				height: 600px;
+				overflow: hidden;
+			}
+			#boxes {
+				width: 500%;
+				height: 600px;
+			}
+			#boxes div {
+				width:20%;
+				height: 100%;
+				float: left;
+				cursor: default;
+			}
+			#box1 {
+				background: #EAD3FF;
+			}
+			#box2 {
+				background: #8C9DF3;
+			}
+			#box3 {
+				background: #65B7EE;
+			}
+			#box4 {
+				background: #D3FFF4;
+			}
+			#box5 {
+				background: #F3FFD3;
+			}
+
+		</style>
+	</head>
+	<body>
+		t:<span id="t" style="color:red">0</span><br />
+		b:<span id="b">null</span><br />
+		c:<span id="c">0</span><br />
+		d:<span id="d">0</span><br />
+		e:<span id="e">0</span><br />
+		f:<span id="f">0</span><br />
+		g:<span id="g">0</span><br />
+		h:<span id="h">0</span><br />
+		i:<span id="i">0</span><br />
+		j:<span id="j">0</span><br />
+		
+		<div id="container">
+			<div id="boxes">
+				<div id ="box1">
+					<span>box1<span>children_box1</span></span>
+				</div>
+				<div id="box2">
+					<span>box2<span>children_box2</span></span>
+				</div>
+				<div id="box3">
+					<span>box3<span>children_box3</span></span>
+				</div>
+				<div id="box4">
+					<span>box4<span>children_box4</span></span>
+				</div>
+				<div id="box5">
+					<span>box5<span>children_box5</span></span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="hammer.js"></script>
+	<script type="text/javascript" src="testH.js"></script>
+	<script type="text/javascript" >
+
+	</script>
+</html>
