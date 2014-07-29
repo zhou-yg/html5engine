@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>dom canvas</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	</head>
+	<style type="text/css">
+		#domContainer{
+			background-color:#63C6E5;
+			width: 600px;
+			height: 300px;
+		}
+		.stone{
+			background-color:#DA7676;
+			width: 50px;
+			height: 5px;
+			position: relative;
+			top: 0px;
+			left:0px;
+		}
+		#canvasContainer{
+			background-color:#F0B57E;
+			width: 600px;
+			height: 300px;
+		}
+	</style>
+	<body>
+		<button onclick="go()">start</button>
+		<br />
+		<span id="t1">0</span>ms
+		<div id="domContainer">
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+			<div class="stone"></div>
+		</div>
+		<span id="t2">0</span>ms
+		<div id="canvasContainer">
+			<canvas id="box" width="600" height="300"></canvas>
+		</div>
+		<p>结果:canvas总是>=dom(此条件下)</p>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript" src="shifty.js"></script>
+	<script>
+		var t1O = document.getElementById('t1');
+		var t2O = document.getElementById('t2');
+
+		var stones = document.querySelectorAll('.stone');
+		stones[0].style.left = '0px';
+		var stoneLeft = 0;
+		var box = document.getElementById('box');
+		var cx = box.getContext('2d');
+		var startT1,startT2;
+		var t1 = t2 = x = 0;
+		
+		cx.fillStyle = '#DA7676';
+		for(var i=1;i<=60;i++){
+			cx.fillRect(x,5*(i-1),50,5);
+		}
+		
+		function domMove(){
+			
+			if(stoneLeft >=550 ){
+				startT2 = (+new Date());
+				cx.fillStyle = '#DA7676';
+				canvasMove();
+				return;
+			}
+
+			stoneLeft++;
+			for(var i=0;i<stones.length;i++){
+				stones[i].style.left = stoneLeft + 'px';
+			}
+			
+			var t = (+new Date());
+			t1 = t1 + (t - startT1);
+			t1O.innerHTML = t1;
+			startT1 = t;
+			
+			setTimeout(domMove,15);
+		}
+		function canvasMove(){
+			
+			if(x>=550){
+				return;
+			}
+		
+			for(var i=1;i<=60;i++){
+				cx.clearRect(x,5*(i-1),50,5);
+			}
+			x++;
+			for(var i=1;i<=60;i++){
+				cx.fillRect(x,5*(i-1),50,5);
+			}			
+			var t = (+new Date());
+			t2 = t2 + (t-startT2);
+			t2O.innerHTML = t2;
+			startT2 = t;
+			
+			setTimeout(canvasMove,15);
+		}
+		
+		function go(){
+
+			startT1 = (+new Date());
+			var l = stones[0].style.left;
+			stoneLeft = Number(l.substring(0,l.length-2));
+			domMove();
+
+
+		}
+	</script>
+</html>
