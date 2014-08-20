@@ -53,14 +53,9 @@
 			cx.fill();
 
 			img = new Image();
-			img.width = "250";
-			img.height = "250";
 			img.src = "../imgs/Penguins.jpg";
 
-			var dfd = new $.Deferred();
 			img.onload = function() {
-				img.width = "250";
-				img.height = "250";
 				cx.drawImage(img, 50, 50, 250, 250);
 				preData = cx.getImageData(0, 0, 600, 600);
 				drawSelectRect(0, 0, 250, 250);

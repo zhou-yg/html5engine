@@ -53,16 +53,66 @@
 				width: 324px;
 				height: 268px;
 			}
+			.b_animate {
+				background-image: url(../imgs/animate.png);
+				background-repeat: no-repeat;
+				background-size:cover;
+				margin: 50px;
+				padding: 0;
+				width: 150px;
+				height: 150px;
+				
+				animation-name: goLeft;
+				animation-duration: 2s;
+				animation-iteration-count: infinite;
+				animation-timing-function: linear;
+				-webkit-animation-name: goLeft;
+				-webkit-animation-duration: 2s;
+				-webkit-animation-iteration-count: infinite;
+				-webkit-animation-timing-function: steps(1,end);
+			}
+			@keyframes goLeft {
+				0% {
+					background-position-x: 0;
+				}
+				25% {
+					background-position-x: -150px;
+				}
+				50% {
+					background-position-x: -300px;
+				}
+				75% {
+					background-position-x: -450px;
+				}
+				100% {
+					background-position-x: -600px;
+				}
+			}
+			@-webkit-keyframes goLeft {
+				0% {
+					background-position-x: 0;
+				}
+				25% {
+					background-position-x: -150px;
+				}
+				50% {
+					background-position-x: -300px;
+				}
+				75% {
+					background-position-x: -450px;
+				}
+				100% {
+					background-position-x: -600px;
+				}
+			}
 		</style>
 	</head>
 	<body>
-		<span>
-		background-repeat:no-repeat;
-		<br />
-		background-position:right top;
-		<br />
-		background-attachment: fixed;
-		</span>
+		<span> background-repeat:no-repeat;
+			<br />
+			background-position:right top;
+			<br />
+			background-attachment: fixed; </span>
 		<div class="b_normal">
 			background-repeat:no-repeat;
 		</div>
@@ -87,6 +137,9 @@
 			background:url(../imgs/mini-pet.png) right no-repeat,
 			<br />
 			url(../imgs/tulips.jpg);
+		</div>
+		<div class="b_animate">
+
 		</div>
 	</body>
 </html>

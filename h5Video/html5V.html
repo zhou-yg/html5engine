@@ -2,14 +2,204 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>html5 engine</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>html5 直播  测试站点</title>
 	</head>
-	<link rel="stylesheet" type="text/css" href="v.css" />
+	<style>
+		.switch {
+			width: 100px;
+			height: 100px;
+		}
+		video {
+			min-width: 320px;
+			width: 100%;
+			min-height: 320px;
+			height: 100%;
+		}
+	</style>
 	<body>
-		<input type="file" accept="video/*;capture=camorder" />
-		<input type="file" accept="image/*;capture=camera">
-		<video controls="true" autoplay="true"></video>
+		id输入:
+		<input id='userId' type="number" value="35093370" />
+		<br />
+		<button id="switch" class="switch">
+			播放id
+		</button>
+		<button id="switch2" class="switch">
+			播放mp4
+		</button>
+		<button id="switch3" class="switch">
+			重置刷新
+		</button>
+		<button id="switch4" class="switch">
+			查看nwState
+		</button>
+		<hr />
+		canplay?___:<span id="a">not</span>
+		<br />
+		isplay?_____:<span id="b">not</span>
+		<br />
+		currentTime:<span id="c">not</span>
+		<br />
+		loadeddata_:<span id="d">not</span>
+		<br />
+		emptied____:<span id="e">not</span>
+		<br />
+		progress___:<span id="f">not</span>
+		<br />
+		pause______:<span id="g">not</span>
+		<br />
+		play_______:<span id="h">not</span>
+		<br />
+		abort______:<span id="i">not</span>
+		<br />
+		network____:<span id="j">not</span>
+		<br />
+		<hr />
+		<video controls="true"></video>
 	</body>
 	<script type="text/javascript" src="jquery2x.js"></script>
-	<script type="text/javascript" src="v.js"></script>
+	<script type="text/javascript">
+		var v;
+		var ii = 0;
+		var canplayI = 0;
+		
+		$(document).ready(function() {
+			v = $("video")[0];
+
+			var hlsUrl = 'http://pull.kktv8.com/livekktv/44042884/playlist.m3u8';
+			var hlsUrl2 = 'http://pull.kktv8.com/livekktv/48277128/playlist.m3u8';
+
+			function createUrl() {
+				var v = $('#userId').val();
+				if (v) {
+					location.href = location.href + '#' + v; 
+					return 'http://pull.kktv8.com/livekktv/' + v + '/playlist.m3u8';
+				}
+				return false;
+			}
+
+
+			$('#switch').click(function() {
+				var u = createUrl();
+				if (u) {
+					hlsUrl = u;
+				}
+				v.src = hlsUrl;
+				v.load();
+
+			});
+			$('#switch2').click(function() {
+				v.src = 'Let_it_go.mp4';
+			});
+			$('#switch3').click(function() {
+				v.load();
+			});
+			$('#switch4').click(function() {
+				$('#j').text(nw[v.networkState]);
+			});
+			
+			var nw = ['NETWORK_EMPTY','NETWORK_IDLE','NETWORK_LOADING','NETWORK_NO_SOURCE[1]'];
+
+			function setE() {
+
+				v.addEventListener('canplay', function() {
+					$('#a').text('can play now !! ' + canplayI + ' ' + ii++);
+					
+					canplayI++;
+					
+					v.play();
+				});
+				v.addEventListener('playing', function() {
+					$('#b').text('playing...! ' + ii++);
+				});
+
+				v.addEventListener('timeupdate', function() {
+					$('#c').text(v.currentTime );
+				});
+
+				v.addEventListener('error', function() {
+					alert('error');
+				});
+				v.addEventListener('loadeddata', function() {
+					$('#d').text('data load start ' + ii++);
+				});
+				//设置url后  -> load() ->play() 会触发
+				//load() ->play() 会触发
+				v.addEventListener('emptied', function() {
+					$('#e').text('become empty ' + ii++);
+				});
+				v.addEventListener('progress', function() {
+					$('#f').text('on progress ' + ii++);
+				});
+				v.addEventListener('pause', function() {
+					$('#g').text('pause ' + ii++);
+				});
+				v.addEventListener('play', function() {
+					$('#h').text('play from pasue ' + ii++);
+				});
+				//设置url后  -> load() ->play() 不会触发
+				//load() ->play() 会触发
+				v.addEventListener('abort',function(){
+					$('#i').text('aborted ' + ii++);
+				});
+			}
+			setE();
+		});
+		/*
+
+		 video.addEventListener('abort',function(){
+		 clearPrompt();
+		 givePrompt('abort');
+		 });
+		 video.addEventListener('canplay',function(_e){
+		 if(!isonAsking){
+		 $video.show();
+		 }
+		 clearPrompt();
+		 });
+		 video.addEventListener('emptied',function(){
+		 clearPrompt();
+		 givePrompt('emptied');
+		 });
+		 video.addEventListener('error',function(){
+		 givePrompt('加载失败');
+		 setTimeout(function(){
+		 message.dispatch('next','auto');
+		 },500);
+		 });
+		 video.addEventListener('pause',function(){
+		 clearPrompt();
+		 givePrompt('被暂停了....');
+		 });
+		 video.addEventListener('process',function(){
+		 clearPrompt();
+		 givePrompt('正在缓冲....');
+		 });
+		 video.addEventListener('stalled',function(){
+		 clearPrompt();
+		 givePrompt('stalled....');
+		 });
+		 video.addEventListener('timeupdate',function(){
+		 if(!isonAsking){
+		 $video.show();
+		 }
+		 });
+
+		 **/
+		/* html5 video 摄像头直播，仅限PC
+		 navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+		 if (navigator.getUserMedia) {
+		 function success(stream) {
+		 v.src = URL.createObjectURL(stream);
+		 }
+		 function error(e) {
+		 console.log(e);
+		 }
+		 var u = navigator.getUserMedia({video:true},success,error);
+		 } else {
+		 alert("false");
+		 }
+		 */
+
+	</script>
 </html>
