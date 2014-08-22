@@ -55,39 +55,40 @@
 		var ii = 0;
 		var canplayI = 0;
 
-		var idArr = [47953200,
-14691922,
-48608496,
-48085827,
-42634799,
-53998072,
-49524479,
-48479708,
-49525350,
-45941960,
-54228887,
-52296480,
-29314740,
-51652108,
-48652662,
-56524360,
-59335497,
-56966557,
-59515783,
-49860332,
-39888620,
+		var idArr = [22275016,
+59179028,
+46006619,
+48280508,
 11389934,
-54649461,
-19424478,
-53932715,
-35744730,
-49525459,
-1990458,
-55555112,
-39516294,
+23947273,
+39888620,
+37715288,
+56016105,
+40367268,
+51652108,
+43935404,
+53403353,
+50985561,
+14033125,
+36276193,
+59500505,
+60033853,
+49860332,
+33331519,
+48383244,
+49025196,
+37433192,
+36278694,
+23132413,
+29800935,
+15830979,
+48388880,
+54552592,
+46392512,
+10046,
+48608496,
 55968145,
-10028,
-10007 ];
+55228993];
 
 		
 		$(document).ready(function() {
@@ -128,17 +129,17 @@
 			vObj.setEvents({
 				progress:function(_e){
 					if(_e.load){
-						$('#a').text('loading');
+						$('#g').text('loading');
 					}
 					if(_e.buffer){
-						$('#a').text('buffering');
+						$('#g').text('buffering');
 					}
 				},
 				play:function(_e){
-					$('#b').text(_e.text);
+					$('#h').text(_e.text);
 				},
 				error:function(_e){
-					$('#c').text(_e.text).css('color','red');
+					$('#i').text(_e.text).css('color','red');
 				}
 			});
 
@@ -189,7 +190,7 @@
 				$('#eventsWindow').append($('<p>'+String.fromCharCode(charInt+i)+'-'+/*events[i]+*/': <span id='+'index_'+String.fromCharCode(charInt+i)+' ></span><span id='+String.fromCharCode(charInt+i)+'><span></p>'));
 			}
 			/*
-
+ 
 			for(var i=0;i<events.length;i++){(
 				function(_i){
 					v.addEventListener(events[_i],function(_e){
