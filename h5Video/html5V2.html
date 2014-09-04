@@ -22,7 +22,7 @@
 	</style>
 	<body>
 		id输入:
-		<input id='userId' type="number" value="8089809" />
+		<input id='userId' type="number" value="36276193" />
 		<br />
 		<button id="switch" class="switch">
 			播放id
@@ -55,40 +55,49 @@
 		var ii = 0;
 		var canplayI = 0;
 
-		var idArr = [22275016,
-59179028,
-46006619,
-48280508,
-11389934,
-23947273,
-39888620,
-37715288,
-56016105,
-40367268,
-51652108,
-43935404,
-53403353,
-50985561,
-14033125,
-36276193,
-59500505,
-60033853,
-49860332,
-33331519,
-48383244,
-49025196,
-37433192,
-36278694,
-23132413,
-29800935,
-15830979,
-48388880,
+		var idArr = [35945758,
+19882823,
+53715807,
+48277128,
 54552592,
-46392512,
-10046,
+48479708,
+42621655,
+56395390,
+58830131,
+21296496,
+6981904,
+49123503,
+55555112,
 48608496,
-55968145,
-55228993];
+19446376,
+54395910,
+57617680,
+35550298,
+22009414,
+51283711,
+33161602,
+44042884,
+48652662,
+55760698,
+53998072,
+60033853,
+51652108,
+21398713,
+2408452,
+58607284,
+56524360,
+27168572,
+18396560,
+49860332,
+21912197,
+17090754,
+52639104,
+51578995,
+45941960,
+10035,
+35997038,
+34732598,
+18152446];
 
 		
 		$(document).ready(function() {
@@ -124,16 +133,12 @@
 			var idI = 0;
 
 			vObj.init({
-				poster:'../imgs/animate.png'
+				poster:'../imgs/animate.png',
+				autoplay:true
 			});
 			vObj.setEvents({
 				progress:function(_e){
-					if(_e.load){
-						$('#g').text('loading');
-					}
-					if(_e.buffer){
-						$('#g').text('buffering');
-					}
+					$('#a').text(_e.text);
 				},
 				play:function(_e){
 					$('#h').text(_e.text);
@@ -168,7 +173,7 @@
 
 			});
 			$('#switch2').click(function() {
-				v.src = 'Let_it_go.mp4';
+				v.src = '../media/Let_it_go.mp4';
 			});
 			$('#switch3').click(function() {
 				v.load();
@@ -190,7 +195,6 @@
 				$('#eventsWindow').append($('<p>'+String.fromCharCode(charInt+i)+'-'+/*events[i]+*/': <span id='+'index_'+String.fromCharCode(charInt+i)+' ></span><span id='+String.fromCharCode(charInt+i)+'><span></p>'));
 			}
 			/*
- 
 			for(var i=0;i<events.length;i++){(
 				function(_i){
 					v.addEventListener(events[_i],function(_e){

@@ -4,9 +4,9 @@
 		//最大重新加载次数，单次等待加载的超时时间
 		this.MAX_LOAD_COUNT = 3;
 		//加载的超时时间
-		this.LOAD_TIMEOUT = 15000;
+		this.LOAD_TIMEOUT = 20000;
 		//缓冲的超时时间
-		this.BUFFER_TIMEOUT = 5000;
+		this.BUFFER_TIMEOUT = 1000;
 		//卡住的单位超时时间，总数5
 		this.PLAY_TIMEOUT   = 3000;
 		
@@ -14,17 +14,16 @@
 		this.keyEvents = ['loadstart','canplaythrough','timeupdate','error','playing','pause'];
 		this.callBackNames = ['progress','play','error'];
 
+		this.progressState = {load:false,loaded:false,play:false,playing:false,pause:false};
 		this.stateObj = {
-			
-			 loadTime:0,
+			autoPlay:false,
 			loadCount:0,
-			deltaTime:0,
+			playCount:0,
 			   isInit:false,
 			   isSetE:false,
-			  isPause:false,
 		 isTimeupdate:false,
 			   loadSt:null,
-			 bufferSt:null,
+			 bufferSi:null,
 			   playSi:null,
 		};
 
@@ -34,101 +33,102 @@
 	};
 	HLive.prototype.deltaPlay = function(){
 
-		var o = this;
-
-		if(o.stateObj.isTimeupdate && !o.stateObj.isPause){
-
-			o.stateObj.playSi = setInterval(function(){
-				
-				var t = (+new Date()) - o.stateObj.deltaTime;
-				
-				if(t>o.PLAY_TIMEOUT){
-
-					clearInterval(o.stateObj.playSi);
-					
-					o.callBackObj.error({'type':'lockTimeout','text':'Lock'});
-				}
-				
-			},o.PLAY_TIMEOUT);
-		}
 	};
 	HLive.prototype.eventHandler = function(_eType){
 		var o = this;
 		//loadstart
 		if(_eType==o.keyEvents[0]){
-			$('#a').append('|');
-			o.callBackObj.progress({'type':_eType,'load':true});
+
+			o.callBackObj.progress({'type':_eType,'text':'Load'});
+			
 			o.stateObj.loadSt = setTimeout(function(){
+				
 				o.callBackObj.error({'type':'error','text':'LOAD TIMEOUT'});
 			},o.LOAD_TIMEOUT);
+			
 		}
 		//canplay
 		if(_eType==o.keyEvents[1]){
 
-			$('#b').append('|');
 			clearTimeout(o.stateObj.loadSt);
 			
-			o.callBackObj.progress({'type':_eType,'buffer':true});
-			o.videoObj.play();
+			o.callBackObj.progress({'type':_eType,'text':'Loaded'});
+			if(o.stateObj.autoPlay){
+				o.videoObj.play();
+			}
+			o.progressState.loaded = true;
 		}
 		//timeupdate
 		if(_eType==o.keyEvents[2]){
 			
 			$('#c').append('|');
-			$('#d').append(o.stateObj.isTimeupdate+'-');
 			//如果不是plyaing的状态，那么说明是第一次触发
 			if(!o.stateObj.isTimeupdate){
 
-				o.callBackObj.play({'type':_eType,'text':'Playing'});
-				o.deltaPlay();
-
 				o.stateObj.isTimeupdate = true;
 			}else{
-				clearTimeout(o.stateObj.bufferSt);
-				o.stateObj.deltaTime = (+new Date());
+
+				o.stateObj.playCount = 0;
+
+				o.callBackObj.play({'type':_eType,'text':'Playing'});
+
+				o.progressState.playing = true;
 			}
 		}
 		//error
 		if(_eType==o.keyEvents[3]){
-			$('#d').append('|').css('color','#ff0000');
-			o.callBackObj.error({'type':_eType,'text':'NO SOURCE'});
+			clearTimeout(o.stateObj.loadSt);
+			o.callBackObj.error({'type':_eType,'text':'No source'});
 			return;
 		}
 		//playing
 		if(_eType==o.keyEvents[4]){
 
-			if(o.stateObj.isTimeupdate || o.stateObj.deltaTime==0){
+			o.stateObj.pause = false;
+
+			if(o.progressState.playing){
 				
-				o.callBackObj.progress({'type':_eType,'text':'Play'});
-				//缓冲计时，如果这个时间内，timeupdate还未更新，可认为此视频无法播放，需要重新load();
-				o.stateObj.bufferSt = setTimeout(function(){
-					o.callBackObj.error({'type':'error','text':'BUFFER TIMEOUT'});
-					o.load();
-				},o.BUFFER_TIMEOUT);
+				
+				
+			}else{
+				//设定计时器，如果timeupdate一直没更新，即‘卡住’了,那么重新加载
+				function task(){
+
+					if(o.stateObj.pause || !o.progressState.loaded){
+						return;
+					}
+					if(o.stateObj.playCount <5){
+						
+						o.stateObj.playCount++;
+					}else{
+						o.stateObj.playCount = 0;
+						o.load();
+					}
+					
+					setTimeout(task,1000);
+				}
+				setTimeout(task,1000);
+				
+				o.callBackObj.progress({'type':_eType,'text':'Buffer'});
 			}
 		}
 		//pause
 		if(_eType==o.keyEvents[5]){
-			$('#f').append('|');
-			o.stateObj.isPause = true;
+			
+			o.stateObj.pause = true;
 			
 			o.callBackObj.progress({'type':_eType,'text':'Pause'});
-
-			clearTimeout(o.stateObj.bufferSt);
 		}
 	};
 	HLive.prototype.load = function(){
 
-		if(this.stateObj.loadCout > this.MAX_LOAD_COUNT ){
-			o.callBackObj.error({'type':'loadCount','text':'reload more than max'});
+		if(this.stateObj.loadCount > this.MAX_LOAD_COUNT ){
+			this.callBackObj.error({'type':'loadCount','text':'reload more than max'});
 			return;
 		}
 
 		this.videoObj.load();
-		
 		this.stateObj.loadCount++;
-		this.stateObj.loadTime  = 0;
-		this.stateObj.deltaTime = 0;
 	};
 	//回调函数_arg{progress:Function,play:Function,error:Function}
 	HLive.prototype.setEvents = function(_arg){
@@ -154,16 +154,21 @@
 	
 		if(!this.stateObj.isSetE){
 			return;
-		}else{
-			
-			this.stateObj.loadCount = 0;
-			this.stateObj.isTimeupdate = false;
-			this.stateObj.deltaTime = 0;
-
-			clearTimeout(this.stateObj.loadSt);		
-			clearTimeout(this.stateObj.bufferSt);		
-			clearInterval(this.stateObj.playSi);		
 		}
+		//并重置
+		this.stateObj.loadCount = 0;
+		this.stateObj.playCount = 0;
+		this.stateObj.isTimeupdate = false;
+		
+
+		 clearTimeout(this.stateObj.loadSt);		
+		clearInterval(this.stateObj.playSi);	
+		clearInterval(this.stateObj.bufferSi);
+			
+		for(var k in this.progressState){
+			this.progressState[k] = false;
+		}
+		
 		this.videoObj.src = url;
 		this.load();
 	};
@@ -186,6 +191,7 @@
 		}
 		if(_arg.autoplay){
 			this.videoObj.setAttribute('autoplay',true);
+			this.stateObj.autoPlay =  true;
 		}
 		if(_arg.poster){
 			this.videoObj.setAttribute('poster',_arg.poster);
@@ -196,3 +202,5 @@
 	
 	window.HLive = HLive;
 })();
+
+
