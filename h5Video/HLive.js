@@ -6,12 +6,12 @@
         this.maxloadCount = 3;
 
         //keyEvents=[loadstart error canplay durationchange(2) timeupdate]
-        this.keyEvents = ['loadstart','canplaythrough','timeupdate','error','playing','pause'];
+        this.keyEvents = ['loadstart','canplay','timeupdate','error','playing','pause'];
         this.callBackNames = ['progress','play','error'];
 
         this.progressState = {load:false,loaded:false,play:false,playing:false,pause:false};
         this.stateObj = {
-            autoPlay:false,
+            autoplay:false,
             loadCount:0,
             playCount:0,
             isInit:false,
@@ -26,6 +26,19 @@
             throw new Error('construct Function need 1 parameter');
         }());
     };
+    HLive.prototype.reset = function(){
+        //并重置
+        this.stateObj.playCount = 0;
+        this.stateObj.isTimeupdate = 0;
+
+        for(var k in this.progressState){
+            this.progressState[k] = false;
+        }
+
+        clearTimeout(this.stateObj.loadSt);
+        clearInterval(this.stateObj.playSi);
+        clearTimeout(this.stateObj.bufferSt);
+    };
     HLive.prototype.eventHandler = function(_eType){
         var o = this;
         //loadstart
@@ -35,10 +48,11 @@
 
             o.stateObj.loadSt = setTimeout(function(){
 
-                o.callBackObj.error({'type':'error','text':'LOAD TIMEOUT'});
+                o.callBackObj.error({'type':'error','text':'LT'});
             },o.LOAD_TIMEOUT);
 
             o.progressState.load = true;
+            return;
         }
         //canplay
         if(_eType==o.keyEvents[1]){
@@ -46,10 +60,11 @@
             clearTimeout(o.stateObj.loadSt);
 
             o.callBackObj.progress({'type':_eType,'text':'Loaded'});
-            if(o.stateObj.autoPlay){
+            if(o.stateObj.autoplay){
                 o.videoObj.play();
             }
             o.progressState.loaded = true;
+            return;
         }
         //playing
         if(_eType==o.keyEvents[4]){
@@ -59,13 +74,13 @@
             if(o.progressState.playing){
 
             }else{
-                //设定计时器，如果timeupdate一直没更新，即‘卡住’了,那么重新加载
+                //设定计时器，如果timeupdate一直没更新,那么重新加载
                 function task(){
 
                     if(o.stateObj.pause || !o.progressState.loaded){
                         return;
                     }
-                    if(o.stateObj.playCount <10){
+                    if(o.stateObj.playCount <5){
 
                         o.stateObj.playCount++;
                     }else{
@@ -73,64 +88,65 @@
                         o.load();
                     }
 
-                    var s = setTimeout(task,1000);
-                    return s;
+                    o.stateObj.bufferSt = setTimeout(task,2000);
                 }
-                this.stateObj.bufferSi = task();
+                task();
 
                 o.callBackObj.progress({'type':_eType,'text':'Buffer'});
             }
+            return;
         }
         //timeupdate
         if(_eType==o.keyEvents[2]){
-            //如果不是plyaing的状态，那么说明是第一次触发
-            if(!o.stateObj.isTimeupdate){
-
-                o.stateObj.isTimeupdate = true;
-            }else{
-
-                o.stateObj.playCount = 0;
+            //plyaing的状态，第一次触发
+            if(o.stateObj.isTimeupdate >1){
 
                 o.callBackObj.play({'type':_eType,'text':'Playing'});
-
+                o.stateObj.playCount = 0;
                 o.progressState.playing = true;
+
+            }else if(o.stateObj.isTimeupdate==1){
+
+                o.callBackObj.play({'type':_eType,'text':'SP2'});
+                o.stateObj.isTimeupdate = 2;
+
+            }else{
+
+                o.callBackObj.play({'type':_eType,'text':'SP'});
+                o.stateObj.isTimeupdate = 1;
             }
         }
         //error
         if(_eType==o.keyEvents[3]){
-            clearTimeout(o.stateObj.loadSt);
-            o.callBackObj.error({'type':_eType,'text':'No source'});
+            o.reset();
+
+            o.callBackObj.error({'type':_eType,'text':'NS'});
             return;
         }
         //pause
         if(_eType==o.keyEvents[5]){
 
             o.stateObj.pause = true;
-
             o.callBackObj.progress({'type':_eType,'text':'Pause'});
+            return;
         }
     };
     HLive.prototype.load = function(){
 
         if(this.stateObj.loadCount > this.maxloadCount ){
-            this.callBackObj.error({'type':'loadCount','text':'reload more than max'});
+            this.callBackObj.error({'type':'loadCount','text':'RM'});
             return;
         }
-
-        this.videoObj.load();
+        var o = this;
+        o.videoObj.load();
+        setTimeout(function(){
+            if(o.stateObj.autoplay){
+                o.videoObj.play();
+            }
+        },0);
         this.stateObj.loadCount++;
 
-        //并重置
-        this.stateObj.playCount = 0;
-        this.stateObj.isTimeupdate = false;
-
-        for(var k in this.progressState){
-            this.progressState[k] = false;
-        }
-
-        clearTimeout(this.stateObj.loadSt);
-        clearInterval(this.stateObj.playSi);
-        clearInterval(this.stateObj.bufferSi);
+        this.reset();
     };
     //回调函数_arg{progress:Function,play:Function,error:Function}
     HLive.prototype.setEvents = function(_arg){
@@ -148,7 +164,7 @@
         var o = this;
         console.log(o.videoObj);
         this.keyEvents.forEach(function(_el,_i){
-            o.videoObj.addEventListener(_el,function(_e){
+            o.videoObj.addEventListener(_el,function(){
                 o.eventHandler(_el);
             });
         });
@@ -158,14 +174,7 @@
         if(!this.stateObj.isSetE){
             return;
         }
-        //并重置
-        this.stateObj.loadCount = 0;
-        this.stateObj.playCount = 0;
-        this.stateObj.isTimeupdate = false;
-
-        for(var k in this.progressState){
-            this.progressState[k] = false;
-        }
+        this.reset();
 
         this.videoObj.src = url;
         this.load();
@@ -187,9 +196,9 @@
             height = height + 'px';
             this.videoObj.style.height= height;
         }
-        if(_arg.autoPlay){
-            this.videoObj.setAttribute('autoplay',true);
-            this.stateObj.autoPlay =  true;
+        if(_arg.autoplay){
+            this.videoObj.setAttribute('autoplay',"");
+            this.stateObj.autoplay =  true;
         }
         if(_arg.poster){
             this.videoObj.setAttribute('poster',_arg.poster);

@@ -171,9 +171,13 @@
 						var $o  = $('#nw').text(nw[v.networkState]);
 						var $o1 = $('#index_'+String.fromCharCode(charInt+_i)).text((ii++) + '-');
 						var $o2 = $('#'+String.fromCharCode(charInt+_i)).append('|').css('color','#FF0000');
+						if(events[_i]=='loadstart'){
+							v.style.display = 'none';
+						}
 						
 						if(events[_i]=='canplaythrough'){
 							v.play();
+							v.style.display = 'block';
 							$o2.css('color','#00FF00');
 						}
 						if(events[_i]=='durationchange'){
