@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>html5 直播  测试站点</title>
+	</head>
+	<style>
+		.switch {
+			width: 100px;
+			height: 100px;
+		}
+		video {
+			min-width: 320px;
+			width: 100%;
+			min-height: 320px;
+			height: 100%;
+		}
+		p {
+			margin: 0;
+		}
+	</style>
+	<body>
+		<button class="switch">
+			load
+		</button>
+	</body>
+	<script type="text/javascript" src="../jquery2x.js"></script>
+	<script type="text/javascript">
+		$('.switch').click(function() {
+			launchFullScreen($('.switch')[0]);
+		});
+		function launchFullScreen(element) {
+			if (element.requestFullscreen) {
+				element.requestFullscreen();
+			} else if (element.msRequestFullscreen) {
+				element.msRequestFullscreen();
+			} else if (element.mozRequestFullScreen) {
+				element.mozRequestFullScreen();
+			} else if (element.webkitRequestFullscreen) {
+				element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+		}
+		function cancelFullScreen() {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.msExitFullscreen) {
+				document.msExitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		}
+	</script>
+</html>

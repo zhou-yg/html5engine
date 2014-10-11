@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "load.js",
+  "sourceRoot": "",
+  "sources": [
+    "load.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,QAAQ,CAAC,KAAT,CAAgB,iEAAhB,CAAA,CAAA;;AAAA,EAIA,CAAA,CAAE,SAAF,CAAY,CAAC,KAAb,CAAmB,SAAA,GAAA;WACjB,CAAC,CAAC,SAAF,CAAY,cAAZ,EAA2B,SAAA,GAAA;aACzB,OAAO,CAAC,GAAR,CAAY,gBAAZ,EADyB;IAAA,CAA3B,EADiB;EAAA,CAAnB,CAJA,CAAA;AAAA"
+}

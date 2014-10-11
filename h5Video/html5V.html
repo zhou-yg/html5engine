@@ -22,7 +22,7 @@
 	</style>
 	<body>
 		id输入:
-		<input id='userId' type="number" value="49532733" />
+		<input id='userId' type="number" value="10450" />
 		<br />
 		<button id="switch" class="switch">
 			播放id
@@ -40,12 +40,14 @@
 			换一个
 		</button>
 		<hr />
+		<video controls="true" ></video>
 		<div id="eventsWindow">
 			<p>networkstate:<span id="nw"></span></p>
 			<p>duration:<span id="dr"></span></p>
+			<p>buffered:<span id="buffer"></span></p>
+			<p>currentTime:<span id="cr"></span></p>
 		</div>
 		<hr />
-		<video controls="true" ></video>
 	</body>
 	<script type="text/javascript" src="jquery2x.js"></script>
 	<script type="text/javascript">
@@ -53,46 +55,16 @@
 		var ii = 0;
 		var canplayI = 0;
 
-		var idArr = [30380690,
-51562724,
-45941960,
-21398713,
-36278694,
-34732598,
-10011,
-47705502,
-59468149,
-19882823,
-35550298,
-33161602,
-42621655,
-62268757,
-4290602,
-48383244,
-58302158,
-48277128,
-23947273,
-22009414,
-21912197,
-17090754,
-18396560,
-62295082,
-58607284,
-13024620,
-47495232,
-48652662,
-40919714,
-61987911,
-62279993,
-53300045,
-34301013
-];
+		var idArr = [30380690,34301013];
+		
 		$(document).ready(function() {
+			
+			
 			v = $("video")[0];
 			v.setAttribute('poster',"../imgs/animate.png");
 
-			var hlsUrl = 'http://pull.kktv8.com/livekktv/44042884/playlist.m3u8';
-			var hlsUrl2 = 'http://pull.kktv8.com/livekktv/48277128/playlist.m3u8';
+			var hlsUrl = 'http://hls-pull.kktv8.com/livekktv/44042884/playlist.m3u8';
+			var hlsUrl2 = 'http://hls-pull.kktv8.com/livekktv/48277128/playlist.m3u8';
 			var nw = ['NETWORK_EMPTY','NETWORK_IDLE','NETWORK_LOADING','NETWORK_NO_SOURCE[1]'];
 			var charInt = 97;
 			var events = ['abort',
@@ -120,9 +92,14 @@
 						'waiting'];
 			var idI = 0;
 
+			$('#userId').click(function(){
+				$(this).val('');
+			});
+
 			function createUrl(_v) {
 				if (_v) {
-					return 'http://pull.kktv8.com/livekktv/' + _v + '/playlist.m3u8';
+					return 'http://hls-pull.kktv8.com/livekktv/' + 10450 + '/playlist.m3u8';
+					//return 'http://pull.ttktv1.com/live/101354/playlist.m3u8';
 				}
 				return false;
 			}
@@ -139,9 +116,19 @@
 				if (u) {
 					hlsUrl = u;
 				}
-				v.src = hlsUrl;
+				v.setAttribute('src',hlsUrl);
 				v.load();
 			});
+			
+			(function(){
+				var u = createUrl($('#userId').val());
+				if (u) {
+					hlsUrl = u;
+				}
+				v.src = hlsUrl;
+				v.load();
+			}());
+			
 			$('#switch2').click(function() {
 				v.src = '../media/Let_it_go.mp4';
 			});
@@ -168,71 +155,36 @@
 			for(var i=0;i<events.length;i++){(
 				function(_i){
 					v.addEventListener(events[_i],function(_e){
-						var $o  = $('#nw').text(nw[v.networkState]);
-						var $o1 = $('#index_'+String.fromCharCode(charInt+_i)).text((ii++) + '-');
-						var $o2 = $('#'+String.fromCharCode(charInt+_i)).append('|').css('color','#FF0000');
-						if(events[_i]=='loadstart'){
-							v.style.display = 'none';
+						
+						try{
+							$('#buffer').html(v.buffered.length+'-'+v.buffered.start(0)+'-'+v.buffered.end(0)+';');
+						}catch(e){
+							
 						}
 						
+						
+						var $o  = $('#nw').text(nw[v.networkState]);
+						var $o1 = $('#index_'+String.fromCharCode(charInt+_i)).append((ii++) + '-');
+						var $o2 = $('#'+String.fromCharCode(charInt+_i)).append('|').css('color','#FF0000');
+						
+ 						if(events[_i]=='loadstart'){
+							v.play();
+						}
 						if(events[_i]=='canplaythrough'){
 							v.play();
-							v.style.display = 'block';
 							$o2.css('color','#00FF00');
 						}
 						if(events[_i]=='durationchange'){
 							$('#dr').text(v.duration);
 						}
+						if(events[_i]=='timeupdate'){
+							$('#cr').text(v.currentTime);
+						}
 					});
 				})(i);
 			}
 		});
-		/*
-			function setE() {
-
-				v.addEventListener('canplay', function() {
-					$('#a').text('can play now !! ' + canplayI + ' ' + ii++);
-					
-					canplayI++;
-					
-					v.play();
-				});
-				v.addEventListener('playing', function() {
-					$('#b').text('playing...! ' + ii++);
-				});
-
-				v.addEventListener('timeupdate', function() {
-					$('#c').text(v.currentTime );
-				});
-
-				v.addEventListener('error', function() {
-					alert('error');
-				});
-				v.addEventListener('loadeddata', function() {
-					$('#d').text('data load start ' + ii++);
-				});
-				//设置url后  -> load() ->play() 会触发
-				//load() ->play() 会触发
-				v.addEventListener('emptied', function() {
-					$('#e').text('become empty ' + ii++);
-				});
-				v.addEventListener('progress', function() {
-					$('#f').text('on progress ' + ii++);
-				});
-				v.addEventListener('pause', function() {
-					$('#g').text('pause ' + ii++);
-				});
-				v.addEventListener('play', function() {
-					$('#h').text('play from pasue ' + ii++);
-				});
-				//设置url后  -> load() ->play() 不会触发
-				//load() ->play() 会触发
-				v.addEventListener('abort',function(){
-					$('#i').text('aborted ' + ii++);
-				});
-			}
-
-		 html5 video 摄像头直播，仅限PC
+/*		 html5 video 摄像头直播，仅限PC
 		 navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
 		 if (navigator.getUserMedia) {
 		 function success(stream) {
