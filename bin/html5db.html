@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>indexedDB demo</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+		input{
+			margin: 5px;
+		}
+	</style>
+	<body>
+		<section>
+			<h3>indexedDB</h3>
+			<input class="name" placeholder="name" type="text"/><br />
+			<input class="password" placeholder="only number" type="number"/><br />
+			<input class="date" type="date" /><br/>
+			<input class="addIn" type="submit" value="addIn" />
+			<input class="delBy" type="submit" value="delBy" /><br />
+			<input class="getBy" type="submit" value="getBy" />
+			<input class="getByIndex" type="submit" value="getByIndex" /><br />
+			<input class="showAll" type="submit" value="showAll" />
+		</section>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript">
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+	if(!indexedDB){
+		console.log('no indexedDB');
+	}
+	var openPromise = indexedDB.open('userlist',4);
+	var db,trans;
+	
+	$('.addIn').click(function(){
+		var u =  {
+			name:$('.name').val(),
+			password:$('.name').val()?$('.name').val():0,
+			date:$('.date').val()
+		};
+		var trans = db.transaction(['userlist'],'readwrite');
+		var store = trans.objectStore('userlist');
+		var addResult = store.add(u);
+		
+		addResult.onsuccess = function(){
+			console.log('addIn',u.name,': ','success');
+		};
+		addResult.onerror = function(_e){
+			console.log('addIn',u.name,': ',_e.target.error);
+		};
+	});
+	$('.getBy').click(function(){
+		var p = parseInt($('.password').val());
+		p = p?p:1;
+		var trans = db.transaction(['userlist'],'readwrite');
+		var store = trans.objectStore('userlist');
+		var getResult = store.get(p);
+
+		getResult.onsuccess = function(_e){
+			console.log('getBy',p,': ',_e.target.result);
+		};
+		getResult.onerror = function(_e){
+			console.log('getBy',p,': ',e.target.error);
+		};
+	});
+	$('.getByIndex').click(function(){
+		var name = $('.name').val();
+		var trans = db.transaction(['userlist'],'readwrite');
+		var store = trans.objectStore('userlist');
+		var index = store.index('n');
+		var getIndexResult = index.get(name);
+
+		getIndexResult.onsuccess = function(_e){
+			console.log('getBy',name,': ',_e.target.result);
+		};
+		getIndexResult.onerror = function(_e){
+			console.log('getBy',name,': ',e.target.error);
+		};
+	});
+	$('.delBy').click(function(){
+		var name = $('.name').val();
+		var trans = db.transaction(['userlist'],'readwrite');
+		var store = trans.objectStore('.userlist');
+		var deleteResult = store['delete'](name);
+
+		deleteResult.onsuccess = function(){
+			console.log('delBy',name,': ','success');
+		};
+		deleteResult.onerror = function(_e){
+			console.log('delBy',name,': ',e.target.error);
+		};
+	});
+	$('.showAll').click(function(){
+		var trans = db.transaction(['userlist'],'readwrite');
+		var store = trans.objectStore('userlist');
+		var cursor = store.openCursor();
+		var i = 0;
+		
+		cursor.onsuccess = function(_e){
+			console.log(i++);
+			var objOne = _e.target.result;
+			console.log(objOne);
+			if(objOne){
+				objOne['continue']();
+			}
+		};
+		cursor.onerror = function(_e){
+		};
+	});
+	
+	openPromise.onsuccess = function(_e){
+		db = _e.target.result;
+		whenOpenSuccess();
+		console.log('opne success');
+	};
+	openPromise.onerror = function(_e){
+	};
+	openPromise.onupgradeneeded = function(_e){
+		db = _e.target.result;
+		whenUpOrInit();
+		console.log('opne upgrade|first');
+	};
+	openPromise.onblocked = function(_e){
+	};
+	
+	function whenUpOrInit(){
+		console.log(db.objectStoreNames);
+		if(!db.objectStoreNames.contains('users')){
+			db.createObjectStore('users',{keyPath:'name'});
+		}
+		if(!db.objectStoreNames.contains('users2')){
+			db.createObjectStore('users2',{keyPath:'name'});
+		}
+		if(!db.objectStoreNames.contains('userlist')){
+			var store = db.createObjectStore('userlist',{autoIncrement:true});
+			store.createIndex('n','name',{
+				unique:false
+			});
+		}
+	}
+	function whenOpenSuccess(){
+		console.log(db.objectStoreNames);
+		trans = db.transaction(['users'],'readwrite');
+	}
+	</script>
+</html>

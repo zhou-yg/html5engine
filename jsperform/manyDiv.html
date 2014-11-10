@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>indexedDB demo</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+	#canvas{
+		width: 100%;
+		float: left;
+	}
+	.cell{
+		width:10px;
+		height: 10px;
+		border-top:solid #555555 1px;
+		border-left: solid #555555 1px;
+		float: left;
+	}
+	.cell:hover{
+		background: #009246;
+	}
+	</style>
+	<body>
+		<div id="canvas">
+		</div>
+	</body>
+	<script type="text/javascript">
+	var size = [200,200];
+	
+	var len = size[0] * size[1];
+
+	var si,si2,i=j=0;
+	
+	var c = document.getElementById('canvas');
+	
+	
+	si = setInterval(function(){
+		if(i<len){
+			var d = document.createElement('div');
+			d.className = 'cell';
+			c.appendChild(d);
+			i++;
+		}else{
+			clearInterval(si);
+		}	
+	},1);
+	si2 = setInterval(function(){
+		if(j<len){
+			var d = document.createElement('div');
+			d.className = 'cell';
+			c.appendChild(d);
+			j++;
+		}else{
+			clearInterval(si2);
+		}	
+	},1);
+	
+	</script>
+</html>

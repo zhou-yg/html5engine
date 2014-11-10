@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>webSocket</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>	
+	</head>
+	<style type="text/css">
+		.msgArea{
+			min-width: 300px;
+			min-height: 420px;
+			max-width: 300px;
+			max-height:420px;
+		}
+	</style>
+	<body>
+		<a class="sendToServer" href="javascript:0">sendToServer</a>
+		<textarea class="msgArea"></textarea>
+	</body>
+	<script type="text/javascript" src="../jquery1x.js"></script>
+	<script type="text/javascript" src="socket.io.js"></script>
+	<script>
+	$(function(){
+		var socket = io.connect('http://10.0.1.82:3001');
+		socket.on('connection',function(_data){
+			$('.msgArea').append(_data+'\r\n');
+		});
+		socket.on('numServer',function(_data){
+			$('.msgArea').append(_data+'\r\n');
+		});
+		
+		$('.sendToServer').click(function(){
+			var num = Math.random()*100;
+			
+			socket.emit('randomNum',{
+				n:num
+			});
+		});
+	});
+	</script>
+</html>

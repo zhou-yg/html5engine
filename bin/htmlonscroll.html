@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>html5 engine</title>
+	</head>
+	<style rel="stylesheet" type="text/css">
+	    body{
+	    	margin: 0;
+	    }
+	    div[or=p] #msg{
+	    	background-color:red;
+	    	width: 50px;
+	    	height: 750px;
+	    }
+	    div[or=l] #msg{
+	    	background-color:green;
+	    	width: 100px;
+	    	height: 100px;
+	    }
+	    #msg2{
+	    	position: fixed;
+	    	top: 0;
+	    	left:0;
+	    }
+	</style>
+	<body>
+		<p id="msg2"></p>
+		<div or='p'>
+			<p id="msg"></p>
+		</div>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script type="text/javascript">
+		window.onorientationchange = function(){
+			//ip 5 有效
+			$('#msg').text(window.orientation);
+			
+			if (window.orientation == 90){
+				$('div').attr('or','p');
+			}
+			if (window.orientation == -90){
+				$('div').attr('or','l');
+			}
+		};
+		window.onscroll = function(){
+			
+			$('#msg2').text($('body').scrollTop());
+		};
+	</script>
+</html>

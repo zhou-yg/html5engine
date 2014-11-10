@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<title>css3 column</title>
+		<style>
+			.ct {
+				-webkit-column-count: 3;
+				-webkit-column-width: 5em;
+				column-count: 2;
+				column-width: 5em;
+			}
+			ol {
+				counter-reset: section; /* 为每个ol元素创建新的计数器实例 */
+				list-style-type: none;
+			}
+			li:before {
+				counter-increment: section; /* 只增加计数器的当前实例 */
+				content: counters(section,'.'); /* 为所有计数器实例增加以“.”分隔的值 */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ct">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+			sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+			Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+			nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+			qui officia deserunt mollit anim id est laborum
+		</div>
+		<ol>
+			<li>
+				item
+			</li>
+			<!-- 1     -->
+			<li>
+				item <!-- 2     -->
+				<ol>
+					<li>
+						item
+					</li>
+					<!-- 2.1   -->
+					<li>
+						item
+					</li>
+					<!-- 2.2   -->
+					<li>
+						item <!-- 2.3   -->
+						<ol>
+							<li>
+								item
+							</li>
+							<!-- 2.3.1 -->
+							<li>
+								item
+							</li>
+							<!-- 2.3.2 -->
+						</ol>
+						<ol>
+							<li>
+								item
+							</li>
+							<!-- 2.3.1 -->
+							<li>
+								item
+							</li>
+							<!-- 2.3.2 -->
+							<li>
+								item
+							</li>
+							<!-- 2.3.3 -->
+						</ol>
+					</li>
+					<li>
+						item
+					</li>
+					<!-- 2.4   -->
+				</ol>
+			</li>
+			<li>
+				item
+			</li>
+			<!-- 3     -->
+			<li>
+				item
+			</li>
+			<!-- 4     -->
+		</ol>
+		<ol>
+			<li>
+				item
+			</li>
+			<!-- 1     -->
+			<li>
+				item
+			</li>
+			<!-- 2     -->
+		</ol>
+	</body>
+	<script type="text/javascript"></script>
+</html>
