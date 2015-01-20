@@ -38,6 +38,7 @@
 			
 			p.onload = function(){
 				cx.drawImage(p,250,250,p.width,p.height);
+                cx.translate(250,250);
 			};
 			/*
 			$(p).ready(function(){
@@ -49,11 +50,8 @@
 		function rotate(){
 			var angle = parseInt($('#angle').val());
 			var angle2 = angle/180*Math.PI;
-			
-			cx.translate(250,250);
-			
 			cx.rotate(angle2);
-			cx.drawImage(p,0,-20,p.width,p.height);
+			cx.drawImage(p,0,0,p.width,p.height);
 		}
 	</script>
 </html>

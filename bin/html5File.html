@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>NULL</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	</head>
+	<style type="text/css">
+		#dropbox {
+			background-color: #f0f0f0;
+			width: 400px;
+			height: 300px;
+		}
+	</style>
+	<body>
+		<input id="inputFile" type="file" />
+		<div id="dropbox">
+			Drop Here
+		</div>
+	</body>
+	<script type="text/javascript" src="jquery1x.js"></script>
+	<script>
+		var dropbox = document.getElementById("dropbox");
+		var inputFile = $('#inputFile');
+		dropbox.addEventListener("dragenter", dragenter, false);
+		dropbox.addEventListener("dragover", dragover, false);
+		dropbox.addEventListener("drop", drop, false);
+
+		function dragenter(e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+
+		function dragover(e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+
+		function drop(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			var dt = e.dataTransfer;
+			files = dt.files;
+			console.log(files);
+			//至此，已经达到了和上一种方式相同的目的
+		}
+		
+		inputFile.on('change',function(){
+			file = this.files;
+		});
+	</script>
+</html>

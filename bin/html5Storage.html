@@ -21,14 +21,28 @@
 	</style>
 	<body>
 		<div id="msg"></div>
-		<canvas id="box" width="980" height="1739">
-
-		</canvas>
 	</body>
-	<script type="text/javascript" src="jquery1x.js"></script>
 	<script type="text/javascript" src="genetic.js"></script>
 	<script type="text/javascript">
-		
-		
+	var kPre = 'k';
+	var vPre = 'v';
+	var len = localStorage.length;
+
+	function print(_str){
+		var msgBox = document.getElementById('msg');
+		var p = document.createElement('p');
+		p.innerHTML = _str;
+		msgBox.appendChild(p);
+	}
+	if(len<0){
+		print('localstorage is null');
+	}else{
+		for(var k in localStorage){
+			print(k+':'+localStorage.getItem(k));
+		}
+	}
+	for(var i=len;i<len+10;i++){
+		localStorage.setItem(kPre+i,vPre+i);
+	}
 	</script>
 </html>

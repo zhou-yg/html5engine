@@ -28,6 +28,7 @@
 		var cHeight;
 		var cx;
 		//3F48CC
+        //150 150
 		$(document).ready(function() {
 			box = $("#box").get(0);
 			cWidth = $("#box").width();
@@ -45,7 +46,7 @@
 
 			var d2 = new Date().getTime();
 			cx.beginPath();
-			cx.fillStyle = "#3F48CC";
+			cx.fillStyle = "#EA9191";
 			cx.fillRect(0,150,150,150);
 			cx.stroke();
 			$("#fr").before((new Date().getTime())-d2);
@@ -53,7 +54,7 @@
 			var d3 = new Date().getTime();
 			var sdArr = cx.getImageData(0,300,150,150);
 			var allDots = 150*150*4;
-			var colorArr = [63,72,204,255];
+			var colorArr = [63,0,204,255];
 			for(var i=0;i<allDots;i++){
 				sdArr.data[i] = colorArr[i%4];
 			}

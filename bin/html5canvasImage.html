@@ -56,7 +56,7 @@
 			img.src = "../imgs/Penguins.jpg";
 
 			img.onload = function() {
-				cx.drawImage(img, 50, 50, 250, 250);
+				cx.drawImage(img, 50, 50,250, 250);
 				preData = cx.getImageData(0, 0, 600, 600);
 				drawSelectRect(0, 0, 250, 250);
 				selectedData = [0, 0, 250, 250];
